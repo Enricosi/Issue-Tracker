@@ -2,7 +2,21 @@ from commands_issues import *
 from commands_developer import *
 
 def dispatch(args):
+    """Route parsed CLI arguments to the corresponding command handler.
 
+    Looks up args.command in a dispatch table and calls the matching function,
+    passing the full args namespace so each handler can read its own arguments.
+
+    Args:
+        args (argparse.Namespace): Parsed arguments returned by parse_args(),
+            must include a 'command' attribute.
+
+    Returns:
+        Any: Whatever the invoked command handler returns.
+
+    Raises:
+        RuntimeError: If args.command does not match any known command.
+    """
     handlers = {
         'list' : cmd_list,
         'add_issue' : cmd_add_issue,
