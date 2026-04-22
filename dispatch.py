@@ -1,7 +1,7 @@
 from commands_issues import *
 from commands_developer import *
 
-def dispatch(args):
+def dispatch(args, conn):
     """Route parsed CLI arguments to the corresponding command handler.
 
     Looks up args.command in a dispatch table and calls the matching function,
@@ -33,4 +33,4 @@ def dispatch(args):
     if fn is None:
         raise RuntimeError('Comando desconocido')
     
-    return fn(args)
+    return fn(args, conn)
