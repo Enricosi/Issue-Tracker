@@ -44,6 +44,6 @@ def parse_args():
     add_developer_parser.add_argument('-l', '--last_name')
 
     remove_developer_parser = subparsers.add_parser('remove_developer')
-    remove_developer_parser.add_argument('id', type=int)
+    remove_developer_parser.add_argument('username')
 
     return parser.parse_args()
