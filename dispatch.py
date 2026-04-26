@@ -22,6 +22,7 @@ def dispatch(args, conn):
         'add_issue' : cmd_add_issue,
         'delete_issue' : cmd_delete_issue,
         'change_status' : cmd_change_status,
+        'list_developers' : cmd_list_developers,
         'add_developer' : cmd_add_developer,
         'remove_developer' : cmd_remove_developer
     }

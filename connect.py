@@ -7,7 +7,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 ENV_PATH = BASE_DIR/".env"
 
-def get_connections():
+def get_connection():
     """Create and return a pymysql connection using credentials from the .env file.
 
     Reads DB_HOST, DB_USER, DB_PASSWORD, and DB_NAME from the .env file located

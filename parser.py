@@ -38,6 +38,8 @@ def parse_args():
     change_status_parser.add_argument('id', type=int)
     change_status_parser.add_argument('new_status', choices=['open', 'in_progress', 'closed'])
 
+    list_developer_parser = subparsers.add_parser('list_developers')
+
     add_developer_parser = subparsers.add_parser('add_developer')
     add_developer_parser.add_argument('username')
     add_developer_parser.add_argument('first_name')
