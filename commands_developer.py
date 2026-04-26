@@ -11,11 +11,12 @@ def cmd_list_developers(args, conn):
         devs = cursor.fetchall()
         if devs:
             for d in devs:
-                print(f'| ID: {d[0]} | Username: {d[1]} | First Name: {d[2]} | Last Name: {d[3]} Tareas activas: {d[4]} |')
+                print(f'| ID: {d[0]} | Username: {d[1]} | First Name: {d[2]} | Last Name: {d[3] or "-"} | Tareas activas: {d[4]} |')
         else:
             print('No hay desarrolladores que mostrar')
 
 def cmd_add_developer(args, conn):
+    
     try:
         with conn.cursor() as cursor:
             sql = "INSERT INTO developer (username, first_name, last_name) VALUES (%s, %s, %s)"

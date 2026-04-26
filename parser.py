@@ -28,7 +28,7 @@ def parse_args():
     add_issue_parser = subparsers.add_parser('add_issue')
     add_issue_parser.add_argument('title')
     add_issue_parser.add_argument('priority', type=int, choices=[1, 2, 3])
-    add_issue_parser.add_argument('username')
+    add_issue_parser.add_argument('-u', '--username')
     add_issue_parser.add_argument('-p', '--posible_cause')
 
     delete_issue_parser = subparsers.add_parser('delete_issue')
@@ -48,4 +48,10 @@ def parse_args():
     remove_developer_parser = subparsers.add_parser('remove_developer')
     remove_developer_parser.add_argument('username')
 
+    reassing_issue_parser = subparsers.add_parser('reassing_issue')
+    reassing_issue_parser.add_argument('id', type=int)
+    reassing_issue_parser.add_argument('username')
+    
+    
+    
     return parser.parse_args()
