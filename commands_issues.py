@@ -1,4 +1,5 @@
 import pymysql
+import datetime
 from exceptions import IssueTrackerError
 
 
@@ -52,7 +53,41 @@ def cmd_delete_issue(args, conn):
             raise IssueTrackerError(f'NO hay un Issue con el ID: {args.id}')
 
 def cmd_change_status(args, conn):
-    print('not implemented')
+    with conn.cursor() as cursor:
+        sql = "SELECT issue_id FROM issue WHERE issue_id = %s"
+        values = (args.id,)
+        cursor.execute(sql, values)
+
+        issue_id = cursor.fetchone()
+
+        if issue_id:
+            sql2 = "SELECT status FROM issue WHERE issue_id = %s"
+            values2 = (issue_id,)
+            cursor.execute(sql2, values2)
+            
+            status = cursor.fetchone()
+
+            if status[0] == args.new_status:
+                raise IssueTrackerError('El estado introducido es el estado actual del Issue')
+        
+            if args.new_status == 'closed':
+                ahora = datetime.datetime.now()
+
+                sql3 = "UPDATE issue SET status = %s, close_date = %s WHERE issue_id = %s"
+                values3 = (args.new_status, ahora, issue_id[0])
+                cursor.execute(sql3, values3)
+                conn.commit()
+                print('Estado del Issue actualizado con exito')
+            else:
+                close_date  = None
+
+                sql4 = "UPDATE issue SET status = %s, close_date = %s WHERE issue_id = %s"
+                values4 = (args.new_status, close_date, issue_id[0])
+                cursor.execute(sql4, values4)
+                conn.commit()       
+                print('Estado del Issue actualizado con exito')                       
+        else:
+            raise IssueTrackerError(f'NO hay un Issue con el ID: {args.id}')
 
 def cmd_reassing_issue(args, conn):
     print('not implemented')
