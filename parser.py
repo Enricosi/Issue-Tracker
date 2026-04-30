@@ -21,9 +21,9 @@ def parse_args():
 
     subparsers = parser.add_subparsers(dest="command")
 
-    list_parser = subparsers.add_parser('list')
-    list_parser.add_argument('-s', '--status', choices=['open', 'in_progress', 'closed'])
-    list_parser.add_argument('-d', '--dev')
+    list_issues_parser = subparsers.add_parser('list_issues')
+    list_issues_parser.add_argument('-s', '--status', choices=['open', 'in_progress', 'closed'])
+    list_issues_parser.add_argument('-u', '--username')
 
     add_issue_parser = subparsers.add_parser('add_issue')
     add_issue_parser.add_argument('title')

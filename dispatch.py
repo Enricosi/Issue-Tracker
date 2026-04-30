@@ -18,7 +18,7 @@ def dispatch(args, conn):
         RuntimeError: If args.command does not match any known command.
     """
     handlers = {
-        'list' : cmd_list,
+        'list_issues' : cmd_list_issues,
         'add_issue' : cmd_add_issue,
         'delete_issue' : cmd_delete_issue,
         'change_status' : cmd_change_status,
