@@ -8,14 +8,15 @@ from exceptions import IssueTrackerError
 
 def main():
     args = parse_args()
-    conn = get_connection()
+    try:
+        conn = get_connection()
+    except(ValueError, pymysql.err.OperationalError) as e:
+        print(e)
+        return
     try:
         dispatch(args, conn)
     except IssueTrackerError as e:
         print(e)
-    except pymysql.OperationalError:
-        conn.rollback()
-        print('Ocurrio un error inesperado durante la conexion con la base de datos!')
     finally:
         if conn.open:    
             conn.close()
