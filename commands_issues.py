@@ -133,4 +133,39 @@ def cmd_change_status(args, conn):
             raise IssueTrackerError(f'NO hay un Issue con el ID: {args.id}')
 
 def cmd_reassing_issue(args, conn):
-    print('not implemented')
+    with conn.cursor() as cursor:
+        sql = "SELECT issue_id, developer_id FROM issue WHERE issue_id = %s"
+        values = (args.id,)
+        cursor.execute(sql, values)
+
+        issue = cursor.fetchone()
+
+        issue_id = issue[0] if issue else None
+        issue_dev_id = issue[1] if issue else None
+        if issue_id == None:
+            raise IssueTrackerError(f'No existe un issue con ID: {args.id}')
+
+        sql2 = "SELECT developer_id, username FROM developer WHERE username = %s"
+        values2 = (args.username,)
+        cursor.execute(sql2, values2)
+
+        dev = cursor.fetchone()
+        
+        developer_id = dev[0] if dev else None
+        username = dev[1] if dev else None
+        
+        if developer_id == None:
+            raise IssueTrackerError(f'No existe un desarrollador con username: {args.username}')
+        
+        if developer_id == issue_dev_id:
+            raise IssueTrackerError(f'Este issue ya esta asigando al desarrollador: {args.username}')
+
+        sql3 = "UPDATE issue SET developer_id = %s WHERE issue_id = %s"
+        values3 = (developer_id, issue_id)
+        cursor.execute(sql3, values3)
+        conn.commit()
+        print(f'El issue con ID: {issue_id} fue reasignado con exito al desarrollador: {username}')
+
+
+
+
