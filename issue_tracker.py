@@ -7,6 +7,11 @@ from exceptions import IssueTrackerError
 
 
 def main():
+    """Entry point: parse arguments, open a DB connection, and dispatch the command.
+
+    Connection errors (missing env vars, unreachable host) are caught before dispatch
+    so the finally block never runs against an undefined conn.
+    """
     args = parse_args()
     try:
         conn = get_connection()

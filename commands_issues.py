@@ -2,10 +2,21 @@ import datetime
 from exceptions import IssueTrackerError
 
 def print_issue(lista):
+    """Print a formatted row for each issue in lista.
+
+    Expects each row to follow the column order:
+    issue_id, title, posible_cause, creation_date, close_date, status, priority, username.
+    """
     for i in lista:
         print(f'ID: {i[0]} | Title: {i[1]} | Posible Cause: {i[2] or "-"} | Creation Date: {i[3]}, | Close Date: {i[4] or "-"} | Status: {i[5]} | Priority: {i[6]} | Username: {i[7] or "-"}')
 
-def cmd_list_issues(args, conn):    
+def cmd_list_issues(args, conn):
+    """List issues, optionally filtered by status, username, or both.
+
+    Builds the WHERE clause dynamically so a single query handles all filter
+    combinations. Raises IssueTrackerError if the filtered result is empty,
+    but prints nothing (no error) when no filters are given and the table is empty.
+    """
     with conn.cursor() as cursor:
         username = args.username if args.username else None
         status = args.status if args.status else None
@@ -54,7 +65,11 @@ def cmd_list_issues(args, conn):
             raise IssueTrackerError(f'No hay tareas para mostrar.')
 
 def cmd_add_issue(args, conn):
-    
+    """Insert a new issue, optionally assigned to a developer.
+
+    If --username is given, verifies the developer exists before inserting.
+    Raises IssueTrackerError if the username is not found in the database.
+    """
     with conn.cursor() as cursor:
         posible_cause = args.posible_cause if args.posible_cause else None
         
@@ -80,6 +95,10 @@ def cmd_add_issue(args, conn):
         print(f'El Issue {args.title} ha sido agregado con exito')
 
 def cmd_delete_issue(args, conn):
+    """Delete an issue only if its status is 'closed'.
+
+    Raises IssueTrackerError if the issue does not exist or is still open/in_progress.
+    """
     with conn.cursor() as cursor:
         sql = "SELECT issue_id FROM issue WHERE issue_id = %s"
         values = (args.id,)
@@ -105,6 +124,10 @@ def cmd_delete_issue(args, conn):
             raise IssueTrackerError(f'NO hay un Issue con el ID: {args.id}')
 
 def cmd_change_status(args, conn):
+    """Update the status of an issue and set close_date when transitioning to 'closed'.
+
+    Raises IssueTrackerError if the issue does not exist or already has the requested status.
+    """
     with conn.cursor() as cursor:
         sql = "SELECT issue_id FROM issue WHERE issue_id = %s"
         values = (args.id,)
@@ -133,6 +156,11 @@ def cmd_change_status(args, conn):
             raise IssueTrackerError(f'NO hay un Issue con el ID: {args.id}')
 
 def cmd_reassing_issue(args, conn):
+    """Reassign an issue to a different developer.
+
+    Raises IssueTrackerError if the issue or the target developer does not exist,
+    or if the issue is already assigned to that developer.
+    """
     with conn.cursor() as cursor:
         sql = "SELECT issue_id, developer_id FROM issue WHERE issue_id = %s"
         values = (args.id,)

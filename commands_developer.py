@@ -1,8 +1,8 @@
 import pymysql
 from exceptions import IssueTrackerError
 
-def cmd_list_developers(args, conn):
-
+def cmd_list_developers(args, conn):  # args unused — no filters for this command
+    """List all developers with their count of active issues (open or in_progress)."""
     with conn.cursor() as cursor:
         sql = "SELECT d.developer_id, d.username, d.first_name, last_name, COUNT(i.issue_id) AS cantidad_tareas FROM developer d " \
         "LEFT JOIN issue i ON i.developer_id = d.developer_id AND i.status IN ('open', 'in_progress')" \
@@ -16,7 +16,10 @@ def cmd_list_developers(args, conn):
             print('No hay desarrolladores que mostrar')
 
 def cmd_add_developer(args, conn):
-    
+    """Insert a new developer. Capitalizes first and last name before storing.
+
+    Raises IssueTrackerError if the username already exists (unique constraint).
+    """
     try:
         with conn.cursor() as cursor:
             sql = "INSERT INTO developer (username, first_name, last_name) VALUES (%s, %s, %s)"
@@ -31,7 +34,11 @@ def cmd_add_developer(args, conn):
         raise IssueTrackerError(f'El nombre de usuario {args.username} ya existe, elige otro por favor')
 
 def cmd_remove_developer(args, conn):
+    """Delete a developer by username.
 
+    Raises IssueTrackerError if the developer does not exist or still has
+    open/in_progress issues assigned.
+    """
     with conn.cursor() as cursor:
         sql1 = "SELECT developer_id FROM developer WHERE username = %s"
         values1 = (args.username,)
