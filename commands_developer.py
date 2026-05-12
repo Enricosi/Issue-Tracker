@@ -1,14 +1,35 @@
 import pymysql
 from exceptions import IssueTrackerError
 
-def cmd_list_developers(args, conn):  # args unused — no filters for this command
-    """List all developers with their count of active issues (open or in_progress)."""
+def cmd_list_developers(args, conn):
+    """List developers with their count of active issues (open or in_progress).
+
+    If --username is given, returns only that developer. Otherwise lists all.
+    """
     with conn.cursor() as cursor:
+
+        username = args.username if args.username else None
+
+        conditions = []
+        values = []
+
         sql = "SELECT d.developer_id, d.username, d.first_name, last_name, COUNT(i.issue_id) AS cantidad_tareas FROM developer d " \
-        "LEFT JOIN issue i ON i.developer_id = d.developer_id AND i.status IN ('open', 'in_progress')" \
-        "GROUP BY d.developer_id;"
-        cursor.execute(sql)
+        "LEFT JOIN issue i ON i.developer_id = d.developer_id AND i.status IN ('open', 'in_progress')"
+        
+
+        if username:
+            conditions.append(" WHERE d.username = %s")
+            values.append(username)
+
+        if conditions:
+            sql += "".join(conditions)
+
+        sql += " GROUP BY d.developer_id" 
+
+        cursor.execute(sql, values)
+
         devs = cursor.fetchall()
+
         if devs:
             for d in devs:
                 print(f'| ID: {d[0]} | Username: {d[1]} | First Name: {d[2]} | Last Name: {d[3] or "-"} | Tareas activas: {d[4]} |')

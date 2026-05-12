@@ -41,6 +41,7 @@ def parse_args():
     change_status_parser.add_argument('new_status', choices=['open', 'in_progress', 'closed'], help="Estatus nuevo del issue. (open, in_progress, closed)")
 
     list_developer_parser = subparsers.add_parser('list_developers', help="Muestra la lista de todos los desarrolladores en la base de datos.")
+    list_developer_parser.add_argument('-u', '--username', help="Filtra por username del desarrollador. Opcional.")
 
     add_developer_parser = subparsers.add_parser('add_developer', help="Agrega un nuvo desarrollador a la base de datos.")
     add_developer_parser.add_argument('username', help="Username del nuevo desarrollador.")
@@ -53,7 +54,5 @@ def parse_args():
     reassing_issue_parser = subparsers.add_parser('reassing_issue', help="Reasigna un issue a un desarrollador o cambia el desarrollador asignado a este.")
     reassing_issue_parser.add_argument('id', type=int, help="ID del issue.")
     reassing_issue_parser.add_argument('username', help="Username del desarrollador.")
-    
-    
-    
+
     return parser.parse_args()

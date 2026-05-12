@@ -95,10 +95,15 @@ python issue_tracker.py reassing_issue <id> <username>
 ### Desarrolladores
 
 #### `list_developers`
-Lista todos los desarrolladores con su cantidad de issues activos.
+Lista los desarrolladores con su cantidad de issues activos.
+
+| Opción | Descripción |
+|--------|-------------|
+| `-u`, `--username` | Muestra solo ese desarrollador (opcional) |
 
 ```bash
 python issue_tracker.py list_developers
+python issue_tracker.py list_developers -u john
 ```
 
 #### `add_developer`
