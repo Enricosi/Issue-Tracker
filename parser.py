@@ -14,7 +14,7 @@ def parse_args():
         add_developer     Register a developer with username and first_name.
                           Optional: -l/--last_name.
         remove_developer  Remove a developer by username.
-        reassing_issue    Reassign an issue (by ID) to a different developer (by username).
+        reassign_issue    Reassign an issue (by ID) to a different developer (by username).
 
     Returns:
         argparse.Namespace: Parsed arguments with 'command' set to the chosen subcommand.
@@ -51,8 +51,8 @@ def parse_args():
     remove_developer_parser = subparsers.add_parser('remove_developer', help="Elimina un desarrollador de la base de datos.")
     remove_developer_parser.add_argument('username', help="Username del desarrollador.")
 
-    reassing_issue_parser = subparsers.add_parser('reassing_issue', help="Reasigna un issue a un desarrollador o cambia el desarrollador asignado a este.")
-    reassing_issue_parser.add_argument('id', type=int, help="ID del issue.")
-    reassing_issue_parser.add_argument('username', help="Username del desarrollador.")
+    reassign_issue_parser = subparsers.add_parser('reassign_issue', help="Reasigna un issue a un desarrollador o cambia el desarrollador asignado a este.")
+    reassign_issue_parser.add_argument('id', type=int, help="ID del issue.")
+    reassign_issue_parser.add_argument('username', help="Username del desarrollador.")
 
     return parser.parse_args()

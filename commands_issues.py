@@ -155,7 +155,7 @@ def cmd_change_status(args, conn):
         else:
             raise IssueTrackerError(f'NO hay un Issue con el ID: {args.id}')
 
-def cmd_reassing_issue(args, conn):
+def cmd_reassign_issue(args, conn):
     """Reassign an issue to a different developer.
 
     Raises IssueTrackerError if the issue or the target developer does not exist,

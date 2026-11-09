@@ -83,11 +83,11 @@ python issue_tracker.py change_status <id> <new_status>
 python issue_tracker.py change_status 5 closed
 ```
 
-#### `reassing_issue`
+#### `reassign_issue`
 Reasigna un issue a otro desarrollador.
 
 ```bash
-python issue_tracker.py reassing_issue <id> <username>
+python issue_tracker.py reassign_issue <id> <username>
 ```
 
 ---
