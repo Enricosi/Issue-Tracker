@@ -14,8 +14,7 @@ def cmd_list_issues(args, conn):
     """List issues, optionally filtered by status, username, or both.
 
     Builds the WHERE clause dynamically so a single query handles all filter
-    combinations. Raises IssueTrackerError if the filtered result is empty,
-    but prints nothing (no error) when no filters are given and the table is empty.
+    combinations. Raises IssueTrackerError if the result is empty.
     """
     with conn.cursor() as cursor:
         username = args.username if args.username else None
@@ -62,7 +61,10 @@ def cmd_list_issues(args, conn):
             else:
                 raise IssueTrackerError(f'El desarrollador {username} no tiene tareas asignadas.')
         else:
-            raise IssueTrackerError(f'No hay tareas para mostrar.')
+            if lista:
+                print_issue(lista)
+            else:
+                raise IssueTrackerError('No hay tareas para mostrar.')
 
 def cmd_add_issue(args, conn):
     """Insert a new issue, optionally assigned to a developer.

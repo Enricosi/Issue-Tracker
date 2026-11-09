@@ -75,3 +75,19 @@ def test_duplicate_username_rolls_back(fake_conn):
     with pytest.raises(IssueTrackerError):
         cmd_add_developer(args, conn)
     assert conn.rollbacks == 1
+
+
+def test_list_issues_without_filters_prints_all(fake_conn, capsys):
+    from commands_issues import cmd_list_issues
+
+    row = (1, "Bug", None, "2026-01-01 10:00:00", None, "open", 2, None)
+    conn = fake_conn(results=[[row]])
+    cmd_list_issues(Namespace(status=None, username=None), conn)
+    assert "ID: 1 | Title: Bug" in capsys.readouterr().out
+
+
+def test_list_issues_on_empty_table_raises(fake_conn):
+    from commands_issues import cmd_list_issues
+
+    with pytest.raises(IssueTrackerError):
+        cmd_list_issues(Namespace(status=None, username=None), fake_conn(results=[[]]))
