@@ -25,7 +25,7 @@ def dispatch(args, conn):
         'list_developers' : cmd_list_developers,
         'add_developer' : cmd_add_developer,
         'remove_developer' : cmd_remove_developer,
-        'reassing_issue' : cmd_reassing_issue
+        'reassign_issue' : cmd_reassign_issue
     }
 
     cmd = args.command
